@@ -21,6 +21,7 @@ RUN dotnet build "Lulu_Portfolio.API/Lulu_Portfolio.API.csproj" -c Release -o /a
 
 # Publish
 RUN dotnet publish "Lulu_Portfolio.API/Lulu_Portfolio.API.csproj" -c Release -o /app/publish
+RUN dotnet ef database update --project Lulu_Portfolio.Infrastructure -c AppDbContext
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:9.0
