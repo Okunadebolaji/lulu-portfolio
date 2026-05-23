@@ -38,4 +38,4 @@ ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 # Run app
-ENTRYPOINT ["dotnet", "Lulu_Portfolio.API.dll"]
+ENTRYPOINT ["bash", "/app/migrate.sh"]
