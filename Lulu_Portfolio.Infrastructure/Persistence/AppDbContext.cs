@@ -23,19 +23,30 @@ public class AppDbContext : DbContext
     public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    base.OnModelCreating(modelBuilder);
+
+    modelBuilder.Entity<User>().ToTable("Users");
+    modelBuilder.Entity<Project>().ToTable("Projects");
+    modelBuilder.Entity<Skill>().ToTable("Skills");
+    modelBuilder.Entity<Service>().ToTable("Services");
+    modelBuilder.Entity<Testimonial>().ToTable("Testimonials");
+    modelBuilder.Entity<ContactMessage>().ToTable("ContactMessages");
+
+    // Configure column types for PostgreSQL compatibility
+    foreach (var entityType in modelBuilder.Model.GetEntityTypes())
     {
-        base.OnModelCreating(modelBuilder);
-
-        modelBuilder.Entity<User>().ToTable("Users");
-
-        modelBuilder.Entity<Project>().ToTable("Projects");
-
-        modelBuilder.Entity<Skill>().ToTable("Skills");
-
-        modelBuilder.Entity<Service>().ToTable("Services");
-
-        modelBuilder.Entity<Testimonial>().ToTable("Testimonials");
-
-        modelBuilder.Entity<ContactMessage>().ToTable("ContactMessages");
+        foreach (var property in entityType.GetProperties())
+        {
+            if (property.ClrType == typeof(string))
+            {
+                property.SetColumnType("text");
+            }
+            else if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
+            {
+                property.SetColumnType("timestamp without time zone");
+            }
+        }
     }
+}
 }
