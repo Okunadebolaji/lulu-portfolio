@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Lulu_Portfolio.Infrastructure")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb2ec0cd954df95b42cd857f63dd3e50980c5555")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+93fda59cfab4145111597bc984c32657272b4c9e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Lulu_Portfolio.Infrastructure")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Lulu_Portfolio.Infrastructure")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
