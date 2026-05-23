@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Lulu_Portfolio.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -54,13 +55,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     if (builder.Environment.IsProduction())
     {
-        // Use PostgreSQL in Production
-        options.UseNpgsql(connectionString);
+        options.UseNpgsql(connectionString)
+            .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
     }
     else
     {
-        // Use SQL Server in Development
-        options.UseSqlServer(connectionString);
+        options.UseSqlServer(connectionString)
+            .ConfigureWarnings(w => w.Ignore(RelationalEventId.PendingModelChangesWarning));
     }
 });
 
@@ -125,9 +126,6 @@ using (var scope = app.Services.CreateScope())
         db.Database.Migrate();
     }
 }
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 app.UseSwagger();
 app.UseSwaggerUI();
