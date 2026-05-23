@@ -116,6 +116,19 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Auto-migrate database
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    if (app.Environment.IsProduction())
+    {
+        db.Database.Migrate();
+    }
+}
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
 app.UseSwagger();
 app.UseSwaggerUI();
 
