@@ -1,0 +1,17 @@
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\bin\Debug\net9.0\Lulu_Portfolio.Application.deps.json
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\bin\Debug\net9.0\Lulu_Portfolio.Application.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\bin\Debug\net9.0\Lulu_Portfolio.Application.pdb
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\bin\Debug\net9.0\Lulu_Portfolio.Domain.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\bin\Debug\net9.0\Lulu_Portfolio.Shared.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\bin\Debug\net9.0\Lulu_Portfolio.Domain.pdb
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\bin\Debug\net9.0\Lulu_Portfolio.Shared.pdb
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.csproj.AssemblyReference.cache
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.AssemblyInfoInputs.cache
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.AssemblyInfo.cs
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.csproj.CoreCompileInputs.cache
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Por.7B7857B6.Up2Date
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\refint\Lulu_Portfolio.Application.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.pdb
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\ref\Lulu_Portfolio.Application.dll

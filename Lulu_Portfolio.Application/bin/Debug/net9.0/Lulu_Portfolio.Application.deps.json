@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Lulu_Portfolio.Application/1.0.0": {
+        "dependencies": {
+          "Lulu_Portfolio.Domain": "1.0.0",
+          "Lulu_Portfolio.Shared": "1.0.0"
+        },
+        "runtime": {
+          "Lulu_Portfolio.Application.dll": {}
+        }
+      },
+      "Lulu_Portfolio.Domain/1.0.0": {
+        "runtime": {
+          "Lulu_Portfolio.Domain.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Lulu_Portfolio.Shared/1.0.0": {
+        "runtime": {
+          "Lulu_Portfolio.Shared.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Lulu_Portfolio.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Lulu_Portfolio.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Lulu_Portfolio.Shared/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

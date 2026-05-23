@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v9.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v9.0": {
+      "Lulu_Portfolio.Domain/1.0.0": {
+        "runtime": {
+          "Lulu_Portfolio.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Lulu_Portfolio.Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

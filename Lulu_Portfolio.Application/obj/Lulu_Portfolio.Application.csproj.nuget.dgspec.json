@@ -1,0 +1,213 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Application\\Lulu_Portfolio.Application.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Application\\Lulu_Portfolio.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Application\\Lulu_Portfolio.Application.csproj",
+        "projectName": "Lulu_Portfolio.Application",
+        "projectPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Application\\Lulu_Portfolio.Application.csproj",
+        "packagesPath": "C:\\Users\\okuna\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\okuna\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Domain\\Lulu_Portfolio.Domain.csproj": {
+                "projectPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Domain\\Lulu_Portfolio.Domain.csproj"
+              },
+              "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Shared\\Lulu_Portfolio.Shared.csproj": {
+                "projectPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Shared\\Lulu_Portfolio.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Domain\\Lulu_Portfolio.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Domain\\Lulu_Portfolio.Domain.csproj",
+        "projectName": "Lulu_Portfolio.Domain",
+        "projectPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Domain\\Lulu_Portfolio.Domain.csproj",
+        "packagesPath": "C:\\Users\\okuna\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\okuna\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Shared\\Lulu_Portfolio.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Shared\\Lulu_Portfolio.Shared.csproj",
+        "projectName": "Lulu_Portfolio.Shared",
+        "projectPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Shared\\Lulu_Portfolio.Shared.csproj",
+        "packagesPath": "C:\\Users\\okuna\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\okuna\\Documents\\Lulu_portfolio\\Lulu_Portfolio.Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\okuna\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.200"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

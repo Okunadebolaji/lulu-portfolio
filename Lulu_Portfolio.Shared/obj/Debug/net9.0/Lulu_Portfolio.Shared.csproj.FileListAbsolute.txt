@@ -1,0 +1,11 @@
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\bin\Debug\net9.0\Lulu_Portfolio.Shared.deps.json
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\bin\Debug\net9.0\Lulu_Portfolio.Shared.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\bin\Debug\net9.0\Lulu_Portfolio.Shared.pdb
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\Lulu_Portfolio.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\Lulu_Portfolio.Shared.AssemblyInfoInputs.cache
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\Lulu_Portfolio.Shared.AssemblyInfo.cs
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\Lulu_Portfolio.Shared.csproj.CoreCompileInputs.cache
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\Lulu_Portfolio.Shared.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\refint\Lulu_Portfolio.Shared.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\Lulu_Portfolio.Shared.pdb
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Shared\obj\Debug\net9.0\ref\Lulu_Portfolio.Shared.dll

@@ -1,0 +1,52 @@
+# Build results
+bin/
+obj/
+out/
+dist/
+
+# IDEs
+.vs/
+.vscode/
+*.user
+*.suo
+*.sln.user
+.idea/
+
+# Environment files
+appsettings.Development.json
+.env
+.env.local
+
+# Uploads
+wwwroot/uploads/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Database
+*.db
+*.mdf
+*.ldf
+
+# Dependencies
+.npm
+package-lock.json
+yarn.lock
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Misc
+dist/
+.angular/
