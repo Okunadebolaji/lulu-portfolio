@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Lulu_Portfolio.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260523201113_InitialCreate")]
+    [Migration("20260523201446_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
