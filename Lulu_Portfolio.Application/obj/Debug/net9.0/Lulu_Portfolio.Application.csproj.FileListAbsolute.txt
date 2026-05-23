@@ -15,3 +15,4 @@ C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net
 C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\refint\Lulu_Portfolio.Application.dll
 C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.pdb
 C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\ref\Lulu_Portfolio.Application.dll
+C:\Users\okuna\Documents\Lulu_portfolio\Lulu_Portfolio.Application\obj\Debug\net9.0\Lulu_Portfolio.Application.sourcelink.json
