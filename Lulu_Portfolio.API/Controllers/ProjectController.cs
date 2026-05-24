@@ -90,6 +90,7 @@ namespace Lulu_Portfolio.API.Controllers
                     ThumbnailUrl = dto.ThumbnailUrl?.Trim() ?? string.Empty,
                     LiveUrl = dto.LiveUrl?.Trim() ?? string.Empty,
                     GithubUrl = dto.GithubUrl?.Trim() ?? string.Empty,
+                    IsFeatured = dto.IsFeatured,
                     CreatedAt = DateTime.UtcNow
                 };
 
@@ -135,6 +136,7 @@ namespace Lulu_Portfolio.API.Controllers
                 
                 project.LiveUrl = dto.LiveUrl?.Trim() ?? string.Empty;
                 project.GithubUrl = dto.GithubUrl?.Trim() ?? string.Empty;
+                project.IsFeatured = dto.IsFeatured;
                 project.UpdatedAt = DateTime.UtcNow;
 
                 await _context.SaveChangesAsync();
