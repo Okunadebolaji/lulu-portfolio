@@ -1,12 +1,24 @@
-namespace Lulu_Portfolio.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class User : BaseEntity
+public class User
 {
-    public string FullName { get; set; } = string.Empty;
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
-    public string Email { get; set; } = string.Empty;
+    [Required]
+    public string? FullName { get; set; }
 
-    public string PasswordHash { get; set; } = string.Empty;
+    [Required]
+    public string? Email { get; set; }
 
-    public string Role { get; set; } = "Admin";
+    [Required]
+    public string? PasswordHash { get; set; }
+
+    public string Role { get; set; } = "User";
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? UpdatedAt { get; set; }
 }
