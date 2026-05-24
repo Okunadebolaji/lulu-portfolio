@@ -22,7 +22,7 @@ public class AppDbContext : DbContext
 
     public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
+   protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     base.OnModelCreating(modelBuilder);
 
@@ -44,7 +44,7 @@ public class AppDbContext : DbContext
             }
             else if (property.ClrType == typeof(DateTime) || property.ClrType == typeof(DateTime?))
             {
-                property.SetColumnType("timestamp without time zone");
+                property.SetColumnType("timestamp with time zone");  // CHANGED: was "timestamp without time zone"
             }
         }
     }
