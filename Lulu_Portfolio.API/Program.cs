@@ -120,11 +120,20 @@ if (!Directory.Exists(uploadsPath))
     Directory.CreateDirectory(uploadsPath);
 }
 
-if (app.Environment.IsProduction())
+// Run migrations on startup
+using (var scope = app.Services.CreateScope())
 {
-    using (var scope = app.Services.CreateScope())
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    try
     {
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.Migrate();
+        Console.WriteLine("✅ Database migration completed successfully");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"❌ Migration error: {ex.Message}");
+        if (!app.Environment.IsDevelopment())
+            throw;
     }
 }
 
