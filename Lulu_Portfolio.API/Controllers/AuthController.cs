@@ -41,7 +41,7 @@ namespace Lulu_Portfolio.API.Controllers
 
             var result = _passwordHasher.VerifyHashedPassword(
                 user,
-                user.PasswordHash,
+                user.PasswordHash!,
                 request.Password
             );
 
@@ -53,7 +53,7 @@ namespace Lulu_Portfolio.API.Controllers
             }
 
             var token = _jwtService.GenerateToken(
-                user.Email,
+                user.Email!,
                 user.Role
             );
 
