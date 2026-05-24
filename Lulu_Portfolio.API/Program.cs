@@ -68,8 +68,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // CORS Configuration
 var allowedOrigins = builder.Environment.IsDevelopment()
     ? new[] { "http://localhost:4200", "http://localhost:3000" }
-    : new[] { Environment.GetEnvironmentVariable("ALLOWED_ORIGINS") ?? "https://your-netlify-domain.netlify.app" };
-
+    : new[] { "https://loisajani.netlify.app" };
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
