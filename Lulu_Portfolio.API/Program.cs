@@ -46,7 +46,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Database Configuration
 var connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("DefaultConnection")
     : Environment.GetEnvironmentVariable("DATABASE_URL");
@@ -65,10 +64,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     }
 });
 
-// CORS Configuration
 var allowedOrigins = builder.Environment.IsDevelopment()
-    ? new[] { "http://localhost:4200", "http://localhost:3000" }
+    ? new[] { "http://localhost:4200", "http://localhost:5113", "http://localhost:3000" }
     : new[] { "https://loisajani.netlify.app" };
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
@@ -83,7 +82,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<JwtService>();
 
-// JWT Configuration
 var jwtKey = builder.Configuration["Jwt:Key"] ?? Environment.GetEnvironmentVariable("JWT_KEY");
 var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? Environment.GetEnvironmentVariable("JWT_ISSUER") ?? "LuluPortfolioAPI";
 var jwtAudience = builder.Configuration["Jwt:Audience"] ?? Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? "LuluPortfolioClient";
@@ -116,13 +114,17 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-// Auto-migrate database
-using (var scope = app.Services.CreateScope())
+var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot", "uploads");
+if (!Directory.Exists(uploadsPath))
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    if (app.Environment.IsProduction())
+    Directory.CreateDirectory(uploadsPath);
+}
+
+if (app.Environment.IsProduction())
+{
+    using (var scope = app.Services.CreateScope())
     {
-        // db.Database.Migrate();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     }
 }
 

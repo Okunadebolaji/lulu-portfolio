@@ -22,32 +22,55 @@ namespace Lulu_Portfolio.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var skills = await _context.Skills
-                .OrderBy(x => x.Category)
-                .ToListAsync();
+            try
+            {
+                var skills = await _context.Skills
+                    .OrderBy(x => x.Category)
+                    .ThenBy(x => x.Name)
+                    .ToListAsync();
 
-            return Ok(ApiResponse<List<Skill>>.SuccessResponse(
-                skills,
-                "Skills retrieved successfully"
-            ));
+                return Ok(new
+                {
+                    success = true,
+                    message = "Skills retrieved successfully",
+                    data = skills
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to retrieve skills",
+                    new List<string> { ex.Message }
+                ));
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var skill = await _context.Skills.FindAsync(id);
-
-            if (skill == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse(
-                    "Skill not found"
+                var skill = await _context.Skills.FindAsync(id);
+
+                if (skill == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Skill not found"));
+                }
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Skill retrieved successfully",
+                    data = skill
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to retrieve skill",
+                    new List<string> { ex.Message }
                 ));
             }
-
-            return Ok(ApiResponse<Skill>.SuccessResponse(
-                skill,
-                "Skill retrieved successfully"
-            ));
         }
 
         [Authorize(Roles = "Admin")]
@@ -56,25 +79,32 @@ namespace Lulu_Portfolio.API.Controllers
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(dto.Name))
+                {
+                    return BadRequest(ApiResponse<object>.FailResponse("Skill name is required"));
+                }
+
                 var skill = new Skill
                 {
-                    Name = dto.Name,
+                    Name = dto.Name.Trim(),
                     Percentage = dto.Percentage,
-                    Category = dto.Category,
+                    Category = dto.Category?.Trim() ?? "Other",
                     CreatedAt = DateTime.UtcNow
                 };
 
                 _context.Skills.Add(skill);
                 await _context.SaveChangesAsync();
 
-                return Ok(ApiResponse<Skill>.SuccessResponse(
-                    skill,
-                    "Skill created successfully"
-                ));
+                return Ok(new
+                {
+                    success = true,
+                    message = "Skill created successfully",
+                    data = skill
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<object>.FailResponse(
+                return StatusCode(500, ApiResponse<object>.FailResponse(
                     "Failed to create skill",
                     new List<string> { ex.Message }
                 ));
@@ -83,52 +113,69 @@ namespace Lulu_Portfolio.API.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(
-            int id,
-            [FromBody] UpdateSkillDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateSkillDto dto)
         {
-            var skill = await _context.Skills.FindAsync(id);
-
-            if (skill == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse(
-                    "Skill not found"
+                var skill = await _context.Skills.FindAsync(id);
+
+                if (skill == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Skill not found"));
+                }
+
+                skill.Name = dto.Name.Trim();
+                skill.Percentage = dto.Percentage;
+                skill.Category = dto.Category?.Trim() ?? "Other";
+                skill.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Skill updated successfully",
+                    data = skill
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to update skill",
+                    new List<string> { ex.Message }
                 ));
             }
-
-            skill.Name = dto.Name;
-            skill.Percentage = dto.Percentage;
-            skill.Category = dto.Category;
-            skill.UpdatedAt = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(ApiResponse<Skill>.SuccessResponse(
-                skill,
-                "Skill updated successfully"
-            ));
         }
 
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var skill = await _context.Skills.FindAsync(id);
-
-            if (skill == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse(
-                    "Skill not found"
+                var skill = await _context.Skills.FindAsync(id);
+
+                if (skill == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Skill not found"));
+                }
+
+                _context.Skills.Remove(skill);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Skill deleted successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to delete skill",
+                    new List<string> { ex.Message }
                 ));
             }
-
-            _context.Skills.Remove(skill);
-            await _context.SaveChangesAsync();
-
-            return Ok(ApiResponse<object>.SuccessResponse(
-                null,
-                "Skill deleted successfully"
-            ));
         }
     }
 }

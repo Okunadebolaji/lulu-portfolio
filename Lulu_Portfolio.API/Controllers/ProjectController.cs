@@ -19,214 +19,247 @@ namespace Lulu_Portfolio.API.Controllers
             _context = context;
         }
 
-        // ✅ PUBLIC: Get all projects
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var projects = await _context.Projects
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync();
+            try
+            {
+                var projects = await _context.Projects
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
 
-            return Ok(ApiResponse<List<Project>>.SuccessResponse(
-                projects,
-                "Projects retrieved successfully"
-            ));
+                return Ok(new
+                {
+                    success = true,
+                    message = "Projects retrieved successfully",
+                    data = projects
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to retrieve projects",
+                    new List<string> { ex.Message }
+                ));
+            }
         }
 
-        // ✅ PUBLIC: Get single project
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse(
-                    "Project not found"
+                var project = await _context.Projects.FindAsync(id);
+
+                if (project == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Project not found"));
+                }
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Project retrieved successfully",
+                    data = project
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to retrieve project",
+                    new List<string> { ex.Message }
                 ));
             }
-
-            return Ok(ApiResponse<Project>.SuccessResponse(
-                project,
-                "Project retrieved successfully"
-            ));
         }
 
-        // 🔐 ADMIN ONLY: Create project
         [Authorize(Roles = "Admin")]
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProjectDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateProjectDto dto)
         {
             try
             {
-                // ✅ Validate thumbnail URL is provided
-                if (string.IsNullOrEmpty(dto.ThumbnailUrl))
+                if (string.IsNullOrWhiteSpace(dto.Title))
                 {
-                    return BadRequest(ApiResponse<object>.FailResponse(
-                        "Thumbnail URL is required. Upload image first."
-                    ));
+                    return BadRequest(ApiResponse<object>.FailResponse("Title is required"));
                 }
 
                 var project = new Project
                 {
-                    Title = dto.Title,
-                    Description = dto.Description,
-                    ThumbnailUrl = dto.ThumbnailUrl, // ✅ Use uploaded URL
-                    LiveUrl = dto.LiveUrl,
-                    GithubUrl = dto.GithubUrl,
+                    Title = dto.Title.Trim(),
+                    Description = dto.Description?.Trim() ?? string.Empty,
+                    ThumbnailUrl = dto.ThumbnailUrl?.Trim() ?? string.Empty,
+                    LiveUrl = dto.LiveUrl?.Trim() ?? string.Empty,
+                    GithubUrl = dto.GithubUrl?.Trim() ?? string.Empty,
                     CreatedAt = DateTime.UtcNow
                 };
 
                 _context.Projects.Add(project);
                 await _context.SaveChangesAsync();
 
-                return Ok(ApiResponse<Project>.SuccessResponse(
-                    project,
-                    "Project created successfully"
-                ));
+                return Ok(new
+                {
+                    success = true,
+                    message = "Project created successfully",
+                    data = project
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<object>.FailResponse(
+                return StatusCode(500, ApiResponse<object>.FailResponse(
                     "Failed to create project",
                     new List<string> { ex.Message }
                 ));
             }
         }
 
-        // 🔐 ADMIN ONLY: Update project
         [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, UpdateProjectDto dto)
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
         {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse(
-                    "Project not found"
+                var project = await _context.Projects.FindAsync(id);
+
+                if (project == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Project not found"));
+                }
+
+                project.Title = dto.Title.Trim();
+                project.Description = dto.Description?.Trim() ?? string.Empty;
+                
+                if (!string.IsNullOrWhiteSpace(dto.ThumbnailUrl))
+                {
+                    project.ThumbnailUrl = dto.ThumbnailUrl.Trim();
+                }
+                
+                project.LiveUrl = dto.LiveUrl?.Trim() ?? string.Empty;
+                project.GithubUrl = dto.GithubUrl?.Trim() ?? string.Empty;
+                project.UpdatedAt = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Project updated successfully",
+                    data = project
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to update project",
+                    new List<string> { ex.Message }
                 ));
             }
-
-            project.Title = dto.Title;
-            project.Description = dto.Description;
-            
-            // ✅ Only update thumbnail if new URL provided
-            if (!string.IsNullOrEmpty(dto.ThumbnailUrl))
-            {
-                project.ThumbnailUrl = dto.ThumbnailUrl;
-            }
-            
-            project.LiveUrl = dto.LiveUrl;
-            project.GithubUrl = dto.GithubUrl;
-            project.UpdatedAt = DateTime.UtcNow;
-
-            await _context.SaveChangesAsync();
-
-            return Ok(ApiResponse<Project>.SuccessResponse(
-                project,
-                "Project updated successfully"
-            ));
         }
 
-        // 🔐 ADMIN ONLY: Delete project
         [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var project = await _context.Projects.FindAsync(id);
-
-            if (project == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse(
-                    "Project not found"
+                var project = await _context.Projects.FindAsync(id);
+
+                if (project == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Project not found"));
+                }
+
+                _context.Projects.Remove(project);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Project deleted successfully"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to delete project",
+                    new List<string> { ex.Message }
                 ));
             }
-
-            _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
-
-            return Ok(ApiResponse<object>.SuccessResponse(
-                null!,
-                "Project deleted successfully"
-            ));
         }
 
-        // 🔐 ADMIN ONLY: Upload project image
-        // Returns: { success: true, url: "http://localhost:5113/uploads/abc.png" }
         [Authorize(Roles = "Admin")]
         [HttpPost("upload")]
         public async Task<IActionResult> Upload(IFormFile file)
         {
-            // ✅ Validation
-            if (file == null || file.Length == 0)
-            {
-                return BadRequest(ApiResponse<object>.FailResponse(
-                    "No file uploaded"
-                ));
-            }
-
-            // ✅ File type validation
-            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
-            var fileExtension = Path.GetExtension(file.FileName).ToLower();
-            
-            if (!allowedExtensions.Contains(fileExtension))
-            {
-                return BadRequest(ApiResponse<object>.FailResponse(
-                    $"Invalid file type. Allowed: {string.Join(", ", allowedExtensions)}"
-                ));
-            }
-
-            // ✅ File size validation (max 5MB)
-            const long maxFileSize = 5 * 1024 * 1024; // 5MB
-            if (file.Length > maxFileSize)
-            {
-                return BadRequest(ApiResponse<object>.FailResponse(
-                    "File size exceeds 5MB limit"
-                ));
-            }
-
             try
             {
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "No file uploaded"
+                    });
+                }
+
+                var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif", ".webp" };
+                var fileExtension = Path.GetExtension(file.FileName).ToLower();
+                
+                if (!allowedExtensions.Contains(fileExtension))
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = $"Invalid file type. Allowed: {string.Join(", ", allowedExtensions)}"
+                    });
+                }
+
+                const long maxFileSize = 5 * 1024 * 1024;
+                if (file.Length > maxFileSize)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "File size exceeds 5MB limit"
+                    });
+                }
+
                 var uploadsFolder = Path.Combine(
                     Directory.GetCurrentDirectory(),
                     "wwwroot",
                     "uploads"
                 );
 
-                // ✅ Create uploads folder if missing
                 if (!Directory.Exists(uploadsFolder))
                 {
                     Directory.CreateDirectory(uploadsFolder);
                 }
 
-                // ✅ Generate unique filename (GUID + extension)
                 var fileName = Guid.NewGuid().ToString() + fileExtension;
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
-                // ✅ Save file
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
 
-                // ✅ Generate and return URL
                 var fileUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
 
                 return Ok(new
                 {
                     success = true,
+                    message = "Image uploaded successfully",
                     url = fileUrl,
-                    fileName = fileName,
-                    message = "Image uploaded successfully"
+                    fileName = fileName
                 });
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<object>.FailResponse(
-                    "Failed to upload image",
-                    new List<string> { ex.Message }
-                ));
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Failed to upload image",
+                    error = ex.Message
+                });
             }
         }
     }

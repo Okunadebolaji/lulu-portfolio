@@ -23,58 +23,95 @@ namespace Lulu_Portfolio.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var messages = await _context.ContactMessages
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync();
+            try
+            {
+                var messages = await _context.ContactMessages
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
 
-            return Ok(ApiResponse<List<ContactMessage>>.SuccessResponse(
-                messages,
-                "Contact messages retrieved successfully"
-            ));
+                return Ok(ApiResponse<List<ContactMessage>>.SuccessResponse(
+                    messages,
+                    "Contact messages retrieved successfully"
+                ));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to retrieve messages",
+                    new List<string> { ex.Message }
+                ));
+            }
         }
 
         [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var message = await _context.ContactMessages.FindAsync(id);
-
-            if (message == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse("Message not found"));
-            }
+                var message = await _context.ContactMessages.FindAsync(id);
 
-            return Ok(ApiResponse<ContactMessage>.SuccessResponse(
-                message,
-                "Message retrieved successfully"
-            ));
+                if (message == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Message not found"));
+                }
+
+                return Ok(ApiResponse<ContactMessage>.SuccessResponse(
+                    message,
+                    "Message retrieved successfully"
+                ));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to retrieve message",
+                    new List<string> { ex.Message }
+                ));
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateContactMessageDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateContactMessageDto dto)
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(dto.FullName))
+                {
+                    return BadRequest(ApiResponse<object>.FailResponse("Full name is required"));
+                }
+
+                if (string.IsNullOrWhiteSpace(dto.Email))
+                {
+                    return BadRequest(ApiResponse<object>.FailResponse("Email is required"));
+                }
+
+                if (string.IsNullOrWhiteSpace(dto.Message))
+                {
+                    return BadRequest(ApiResponse<object>.FailResponse("Message is required"));
+                }
+
                 var message = new ContactMessage
                 {
-                    FullName = dto.FullName,
-                    Email = dto.Email,
-                    Subject = dto.Subject,
-                    Message = dto.Message,
+                    FullName = dto.FullName.Trim(),
+                    Email = dto.Email.Trim(),
+                    Subject = dto.Subject?.Trim() ?? string.Empty,
+                    Message = dto.Message.Trim(),
                     CreatedAt = DateTime.UtcNow
                 };
 
                 _context.ContactMessages.Add(message);
                 await _context.SaveChangesAsync();
 
-                return Ok(ApiResponse<ContactMessage>.SuccessResponse(
-                    message,
-                    "Message sent successfully"
-                ));
+                return Ok(new
+                {
+                    success = true,
+                    message = "Message sent successfully",
+                    data = message
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(ApiResponse<object>.FailResponse(
+                return StatusCode(500, ApiResponse<object>.FailResponse(
                     "Failed to send message",
                     new List<string> { ex.Message }
                 ));
@@ -85,20 +122,30 @@ namespace Lulu_Portfolio.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var message = await _context.ContactMessages.FindAsync(id);
-
-            if (message == null)
+            try
             {
-                return NotFound(ApiResponse<object>.FailResponse("Message not found"));
+                var message = await _context.ContactMessages.FindAsync(id);
+
+                if (message == null)
+                {
+                    return NotFound(ApiResponse<object>.FailResponse("Message not found"));
+                }
+
+                _context.ContactMessages.Remove(message);
+                await _context.SaveChangesAsync();
+
+                return Ok(ApiResponse<object>.SuccessResponse(
+                    null!,
+                    "Message deleted successfully"
+                ));
             }
-
-            _context.ContactMessages.Remove(message);
-            await _context.SaveChangesAsync();
-
-            return Ok(ApiResponse<object>.SuccessResponse(
-                null!,
-                "Message deleted successfully"
-            ));
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<object>.FailResponse(
+                    "Failed to delete message",
+                    new List<string> { ex.Message }
+                ));
+            }
         }
     }
 }
