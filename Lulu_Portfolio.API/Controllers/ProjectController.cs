@@ -5,8 +5,6 @@ using Lulu_Portfolio.Infrastructure.Persistence;
 using Lulu_Portfolio.Domain.Entities;
 using Lulu_Portfolio.API.Models.DTOs.Project;
 using Lulu_Portfolio.API.Models;
-using CloudinaryDotNet;
-using CloudinaryDotNet.Actions;
 
 namespace Lulu_Portfolio.API.Controllers
 {
@@ -15,12 +13,10 @@ namespace Lulu_Portfolio.API.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly AppDbContext _context;
-        private readonly Cloudinary _cloudinary;
 
-        public ProjectController(AppDbContext context, Cloudinary cloudinary)
+        public ProjectController(AppDbContext context)
         {
             _context = context;
-            _cloudinary = cloudinary;
         }
 
         [HttpGet]
@@ -57,11 +53,7 @@ namespace Lulu_Portfolio.API.Controllers
 
                 if (project == null)
                 {
-                    return NotFound(new
-                    {
-                        success = false,
-                        message = "Project not found"
-                    });
+                    return NotFound(ApiResponse<object>.FailResponse("Project not found"));
                 }
 
                 return Ok(new
@@ -80,44 +72,36 @@ namespace Lulu_Portfolio.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateProjectDto dto)
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (string.IsNullOrWhiteSpace(dto.Title))
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest(ApiResponse<object>.FailResponse("Title is required"));
                 }
 
                 var project = new Project
                 {
-                    Title = dto.Title,
-                    Description = dto.Description,
-                    ThumbnailUrl = dto.ThumbnailUrl,
-                    LiveUrl = dto.LiveUrl,
-                    GithubUrl = dto.GithubUrl,
-                    IsFeatured = dto.IsFeatured
+                    Title = dto.Title.Trim(),
+                    Description = dto.Description?.Trim() ?? string.Empty,
+                    ThumbnailUrl = dto.ThumbnailUrl?.Trim() ?? string.Empty,
+                    LiveUrl = dto.LiveUrl?.Trim() ?? string.Empty,
+                    GithubUrl = dto.GithubUrl?.Trim() ?? string.Empty,
+                    IsFeatured = dto.IsFeatured,
+                    CreatedAt = DateTime.UtcNow
                 };
 
                 _context.Projects.Add(project);
                 await _context.SaveChangesAsync();
 
-                return CreatedAtAction(nameof(GetById), new { id = project.Id }, new
+                return Ok(new
                 {
                     success = true,
                     message = "Project created successfully",
                     data = project
-                });
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Database error occurred",
-                    error = ex.InnerException?.Message ?? ex.Message
                 });
             }
             catch (Exception ex)
@@ -129,8 +113,8 @@ namespace Lulu_Portfolio.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateProjectDto dto)
         {
             try
@@ -139,22 +123,22 @@ namespace Lulu_Portfolio.API.Controllers
 
                 if (project == null)
                 {
-                    return NotFound(new
-                    {
-                        success = false,
-                        message = "Project not found"
-                    });
+                    return NotFound(ApiResponse<object>.FailResponse("Project not found"));
                 }
 
-                project.Title = dto.Title;
-                project.Description = dto.Description;
-                project.ThumbnailUrl = dto.ThumbnailUrl;
-                project.LiveUrl = dto.LiveUrl;
-                project.GithubUrl = dto.GithubUrl;
+                project.Title = dto.Title.Trim();
+                project.Description = dto.Description?.Trim() ?? string.Empty;
+                
+                if (!string.IsNullOrWhiteSpace(dto.ThumbnailUrl))
+                {
+                    project.ThumbnailUrl = dto.ThumbnailUrl.Trim();
+                }
+                
+                project.LiveUrl = dto.LiveUrl?.Trim() ?? string.Empty;
+                project.GithubUrl = dto.GithubUrl?.Trim() ?? string.Empty;
                 project.IsFeatured = dto.IsFeatured;
-                project.UpdatedAt = DateTime.UtcNow;
+                project.UpdatedAt = DateTime.Now.ToUniversalTime();
 
-                _context.Projects.Update(project);
                 await _context.SaveChangesAsync();
 
                 return Ok(new
@@ -162,15 +146,6 @@ namespace Lulu_Portfolio.API.Controllers
                     success = true,
                     message = "Project updated successfully",
                     data = project
-                });
-            }
-            catch (DbUpdateException ex)
-            {
-                return StatusCode(500, new
-                {
-                    success = false,
-                    message = "Database error occurred",
-                    error = ex.InnerException?.Message ?? ex.Message
                 });
             }
             catch (Exception ex)
@@ -182,8 +157,8 @@ namespace Lulu_Portfolio.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -192,11 +167,7 @@ namespace Lulu_Portfolio.API.Controllers
 
                 if (project == null)
                 {
-                    return NotFound(new
-                    {
-                        success = false,
-                        message = "Project not found"
-                    });
+                    return NotFound(ApiResponse<object>.FailResponse("Project not found"));
                 }
 
                 _context.Projects.Remove(project);
@@ -205,8 +176,7 @@ namespace Lulu_Portfolio.API.Controllers
                 return Ok(new
                 {
                     success = true,
-                    message = "Project deleted successfully",
-                    data = project
+                    message = "Project deleted successfully"
                 });
             }
             catch (Exception ex)
@@ -218,8 +188,8 @@ namespace Lulu_Portfolio.API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("upload")]
-        [Authorize]
         public async Task<IActionResult> Upload(IFormFile file)
         {
             try
@@ -255,35 +225,34 @@ namespace Lulu_Portfolio.API.Controllers
                     });
                 }
 
-                using (var stream = file.OpenReadStream())
+                var uploadsFolder = Path.Combine(
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "uploads"
+                );
+
+                if (!Directory.Exists(uploadsFolder))
                 {
-                    var uploadParams = new ImageUploadParams
-                    {
-                        File = new FileDescription(file.FileName, stream),
-                        Folder = "lulu-portfolio/projects",
-                        Overwrite = false
-                    };
-
-                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
-
-                    if (uploadResult.Error != null)
-                    {
-                        return StatusCode(500, new
-                        {
-                            success = false,
-                            message = "Failed to upload image to cloud",
-                            error = uploadResult.Error.Message
-                        });
-                    }
-
-                    return Ok(new
-                    {
-                        success = true,
-                        message = "Image uploaded successfully",
-                        url = uploadResult.SecureUrl.ToString(),
-                        publicId = uploadResult.PublicId
-                    });
+                    Directory.CreateDirectory(uploadsFolder);
                 }
+
+                var fileName = Guid.NewGuid().ToString() + fileExtension;
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+
+                var fileUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Image uploaded successfully",
+                    url = fileUrl,
+                    fileName = fileName
+                });
             }
             catch (Exception ex)
             {
