@@ -5,6 +5,8 @@ using Lulu_Portfolio.Infrastructure.Persistence;
 using Lulu_Portfolio.Domain.Entities;
 using Lulu_Portfolio.API.Models.DTOs.Project;
 using Lulu_Portfolio.API.Models;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace Lulu_Portfolio.API.Controllers
 {
@@ -13,10 +15,12 @@ namespace Lulu_Portfolio.API.Controllers
     public class ProjectController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly Cloudinary _cloudinary;
 
-        public ProjectController(AppDbContext context)
+        public ProjectController(AppDbContext context, Cloudinary cloudinary)
         {
             _context = context;
+            _cloudinary = cloudinary;
         }
 
         [HttpGet]
@@ -91,7 +95,7 @@ namespace Lulu_Portfolio.API.Controllers
                     LiveUrl = dto.LiveUrl?.Trim() ?? string.Empty,
                     GithubUrl = dto.GithubUrl?.Trim() ?? string.Empty,
                     IsFeatured = dto.IsFeatured,
-                    CreatedAt = DateTime.UtcNow
+                    CreatedAt = DateTime.Now.ToUniversalTime()
                 };
 
                 _context.Projects.Add(project);
@@ -225,34 +229,36 @@ namespace Lulu_Portfolio.API.Controllers
                     });
                 }
 
-                var uploadsFolder = Path.Combine(
-                    Directory.GetCurrentDirectory(),
-                    "wwwroot",
-                    "uploads"
-                );
-
-                if (!Directory.Exists(uploadsFolder))
+                // Upload to Cloudinary
+                using (var stream = file.OpenReadStream())
                 {
-                    Directory.CreateDirectory(uploadsFolder);
+                    var uploadParams = new ImageUploadParams
+                    {
+                        File = new FileDescription(file.FileName, stream),
+                        Folder = "lulu-portfolio/projects",
+                        Overwrite = false
+                    };
+
+                    var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+                    if (uploadResult.Error != null)
+                    {
+                        return StatusCode(500, new
+                        {
+                            success = false,
+                            message = "Failed to upload image to Cloudinary",
+                            error = uploadResult.Error.Message
+                        });
+                    }
+
+                    return Ok(new
+                    {
+                        success = true,
+                        message = "Image uploaded successfully to Cloudinary",
+                        url = uploadResult.SecureUrl.ToString(),
+                        publicId = uploadResult.PublicId
+                    });
                 }
-
-                var fileName = Guid.NewGuid().ToString() + fileExtension;
-                var filePath = Path.Combine(uploadsFolder, fileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(stream);
-                }
-
-                var fileUrl = $"{Request.Scheme}://{Request.Host}/uploads/{fileName}";
-
-                return Ok(new
-                {
-                    success = true,
-                    message = "Image uploaded successfully",
-                    url = fileUrl,
-                    fileName = fileName
-                });
             }
             catch (Exception ex)
             {
