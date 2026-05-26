@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Lulu_Portfolio.API.Services;
 using Microsoft.OpenApi.Models;
+using CloudinaryDotNet;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,24 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
+
+// Register Cloudinary
+var cloudinaryUrl = Environment.GetEnvironmentVariable("CLOUDINARY_URL") 
+    ?? builder.Configuration["Cloudinary:Url"] 
+    ?? "cloudinary://key:secret@cloud";
+
+try
+{
+    var cloudinary = new Cloudinary(cloudinaryUrl);
+    cloudinary.Api.Secure = true;
+    builder.Services.AddSingleton(cloudinary);
+    Console.WriteLine("✅ Cloudinary configured successfully");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"⚠️ Cloudinary configuration error: {ex.Message}");
+    // Continue without Cloudinary - will fail on upload but app won't crash on startup
+}
 
 var connectionString = builder.Environment.IsDevelopment()
     ? builder.Configuration.GetConnectionString("DefaultConnection")
@@ -114,13 +133,14 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
+// Create uploads folder
 var uploadsPath = Path.Combine(app.Environment.ContentRootPath, "wwwroot", "uploads");
 if (!Directory.Exists(uploadsPath))
 {
     Directory.CreateDirectory(uploadsPath);
 }
 
-// Run migrations on startup
+// Run migrations
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();

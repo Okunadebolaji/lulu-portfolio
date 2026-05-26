@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Lulu_Portfolio.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+62b2fb855ad34d5c2076039738dcabb7ef603ec1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+10ac93d9d94b4f3879f40ebca026f23f34d80cba")]
 [assembly: System.Reflection.AssemblyProductAttribute("Lulu_Portfolio.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Lulu_Portfolio.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
