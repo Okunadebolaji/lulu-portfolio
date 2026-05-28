@@ -85,7 +85,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var allowedOrigins = builder.Environment.IsDevelopment()
     ? new[] { "http://localhost:4200", "http://localhost:5113", "http://localhost:3000" }
-    : new[] { "https://loisajani.netlify.app" };
+   : new[] { "https://ajaniloIS.netlify.app" };
 
 builder.Services.AddCors(options =>
 {
